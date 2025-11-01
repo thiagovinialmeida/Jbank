@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Table(name = "users")
 @Getter
 @Setter
-@AllArgsConstructor
 public class User extends Account{
     @Id
     String cpf;
@@ -22,4 +21,14 @@ public class User extends Account{
     LocalDate dateOfBirth;
     char gender;
     final Enum<AccountType> accType = AccountType.CLIENT;
+
+    public User(String name, String email, String phorneNumber, String address, String cpf, String civilStatus,
+                String profession, LocalDate dateOfBirth, char gender){
+        super(name, email, phorneNumber, address);
+        this.cpf = cpf;
+        this.civilStatus = civilStatus;
+        this.profession = profession;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
 }

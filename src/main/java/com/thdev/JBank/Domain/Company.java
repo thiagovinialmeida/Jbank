@@ -12,11 +12,18 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-@AllArgsConstructor
 public class Company extends Account{
     @Id
     private String cnpj;
     private String companyName;
     private String contactPerson;
     final Enum<AccountType> accType = AccountType.COMPANY;
+
+    public Company(String name, String email, String phoneNumber, String address, String cnpj,
+                   String companyName, String contactPerson) {
+        super(name, email, phoneNumber, address);
+        this.cnpj = cnpj;
+        this.companyName = companyName;
+        this.contactPerson = contactPerson;
+    }
 }

@@ -7,4 +7,8 @@ abstract class Account {
     String address;
     final double balance = 0.0;
     final boolean isActive = true;
+
+    public Account(String name, String email, String phorneNumber, String address) {
+    }
+
 }
