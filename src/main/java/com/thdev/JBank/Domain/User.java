@@ -1,10 +1,9 @@
 package com.thdev.JBank.Domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thdev.JBank.Domain.Enum.AccountType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -16,19 +15,26 @@ import java.time.LocalDate;
 public class User extends Account{
     @Id
     String cpf;
+    @Column(name = "civil_Status")
     String civilStatus;
     String profession;
+    @Column(name = "date_of_birth")
     LocalDate dateOfBirth;
     char gender;
-    final Enum<AccountType> accType = AccountType.CLIENT;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type")
+    AccountType accType;
 
-    public User(String name, String email, String phorneNumber, String address, String cpf, String civilStatus,
+    public User() {}
+
+    public User(String name, String email, String password, String phoneNumber, String address, String cpf, String civilStatus,
                 String profession, LocalDate dateOfBirth, char gender){
-        super(name, email, phorneNumber, address);
+        super(name, email, password, phoneNumber, address);
         this.cpf = cpf;
         this.civilStatus = civilStatus;
         this.profession = profession;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.accType = AccountType.CLIENT;
     }
 }
