@@ -5,14 +5,19 @@ import com.thdev.JBank.Domain.Enum.AccountType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-public class User extends Account{
+public class User extends Account implements UserDetails {
     @Id
     String cpf;
     @Column(name = "civil_Status")
@@ -36,5 +41,37 @@ public class User extends Account{
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.accType = AccountType.CLIENT;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.accType == AccountType.CLIENT) return List.of(new SimpleGrantedAuthority("CLIENT"),
+                new SimpleGrantedAuthority("CLIENT"));
+        return List.of(new SimpleGrantedAuthority("CLIENT"));
+    }
+
+    @Override
+    public String getUsername() {
+        return getCpf();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }

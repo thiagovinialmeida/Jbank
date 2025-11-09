@@ -1,8 +1,8 @@
 package com.thdev.JBank.Service;
 
-import com.thdev.JBank.DTO.AuthenticationDTO;
-import com.thdev.JBank.DTO.LoginResponseDTO;
-import com.thdev.JBank.DTO.RegisterDTO;
+import com.thdev.JBank.DTO.Login.AuthenticationDTO;
+import com.thdev.JBank.DTO.Login.LoginResponseDTO;
+import com.thdev.JBank.DTO.Login.RegisterDTO;
 import com.thdev.JBank.Domain.User;
 import com.thdev.JBank.Infrastructure.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ public class AuthenticationService implements UserDetailsService {
     public ResponseEntity loginUser(AuthenticationDTO data, Authentication auth) {
         if(ur.findByCpf(data.cpf()) != null) {
             var token = ts.generateToken((User) auth.getPrincipal());
+
             return ResponseEntity.ok(new LoginResponseDTO(token));
         }
         else {

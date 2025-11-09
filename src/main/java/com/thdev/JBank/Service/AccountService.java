@@ -11,35 +11,52 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
     @Autowired
-    private static UserRepository ur;
+    private UserRepository ur;
 
-    public ResponseEntity<Void> CreateAccount(RequestUserDTO data) {
-        if(validateCpf(data.cpf())){
-            //throw new IllegalArgumentException("CPF já cadastrado.");
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<RequestUserDTO> getAccountInfo(String cpf) {
+        User user = ur.findByCpf(cpf);
+        RequestUserDTO dto = new RequestUserDTO(
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getPhoneNumber(),
+                user.getAddress(),
+                user.getBalance(),
+                user.getCpf(),
+                user.getCivilStatus(),
+                user.getProfession(),
+                user.getDateOfBirth(),
+                user.getGender());
+        return ResponseEntity.ok(dto);
+    }
+
+    public ResponseEntity DeleteAccount(String cpf) {
+        User user = ur.findByCpf(cpf);
+
+        if (user != null) {
+            ur.delete(user);
+            return ResponseEntity.ok("Deleted successfully");
         } else {
-            User newUser = new User(
-                    data.name(),
-                    data.email(),
-                    data.password(),
-                    data.phoneNumber(),
-                    data.address(),
-                    data.cpf(),
-                    data.civilStatus(),
-                    data.profession(),
-                    data.dateOfBirth(),
-                    data.gender());
-            ur.save(newUser);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.notFound().build();
         }
     }
-    public static void ReadAccount() {}
-    public static void DeleteAccount() {}
-    public static void UpdateAccount() {}
 
-    private static boolean validateCpf(String cpf) {
-        //True = Existe
-        //False = Não existe
-        return ur.findByCpf(cpf) != null;
+    public ResponseEntity UpdateAccount(RequestUserDTO data) {
+        User user = ur.findByCpf(data.cpf());
+        if (user != null) {
+            user.setName(data.name());
+            user.setEmail(data.email());
+            user.setPassword(data.password());
+            user.setPhoneNumber(data.phoneNumber());
+            user.setAddress(data.address());
+            user.setCivilStatus(data.civilStatus());
+            user.setProfession(data.profession());
+            user.setDateOfBirth(data.dateOfBirth());
+            user.setGender(data.gender());
+
+            return ResponseEntity.ok("Updated successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

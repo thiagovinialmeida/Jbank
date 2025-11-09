@@ -1,7 +1,8 @@
 package com.thdev.JBank.Controller;
 
-import com.thdev.JBank.DTO.AuthenticationDTO;
-import com.thdev.JBank.DTO.RegisterDTO;
+import com.sun.jdi.InvocationException;
+import com.thdev.JBank.DTO.Login.AuthenticationDTO;
+import com.thdev.JBank.DTO.Login.RegisterDTO;
 import com.thdev.JBank.Service.AccountService;
 import com.thdev.JBank.Service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,11 @@ public class AuthController {
     private AccountService userService;
 
     @PostMapping("/login")
-    public ResponseEntity login(AuthenticationDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
-        var auth = authManager.authenticate(usernamePassword);
+    public ResponseEntity login(@RequestBody AuthenticationDTO data) {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.cpf(), data.password());
+            var auth = authManager.authenticate(usernamePassword);
 
-        return authService.loginUser(data, auth);
+            return authService.loginUser(data, auth);
     }
 
     @PostMapping("/register")

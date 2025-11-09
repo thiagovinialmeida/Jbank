@@ -2,10 +2,14 @@ package com.thdev.JBank.Domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @MappedSuperclass
+@Getter
+@Setter
 abstract class Account {
     String name;
     String email;
