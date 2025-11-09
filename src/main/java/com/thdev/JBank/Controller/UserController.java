@@ -2,19 +2,30 @@ package com.thdev.JBank.Controller;
 
 import com.thdev.JBank.DTO.RequestUserDTO;
 import com.thdev.JBank.Service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    @Autowired
     private AccountService as;
 
-    @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody RequestUserDTO data) {
-        return as.CreateAccount(data);
+    @GetMapping(value = "/{cpf}")
+    public ResponseEntity<RequestUserDTO> getBalance(@PathVariable String cpf) {
+        return as.getAccountInfo(cpf);
+    }
+
+    @DeleteMapping(value = "/{cpf}")
+    public ResponseEntity DeleteAccount(@PathVariable String cpf) {
+        return as.DeleteAccount(cpf);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> UpdateAccount(@RequestBody RequestUserDTO data) {
+        return as.UpdateAccount(data);
     }
 }

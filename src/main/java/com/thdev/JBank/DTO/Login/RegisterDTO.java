@@ -1,4 +1,4 @@
-package com.thdev.JBank.DTO;
+package com.thdev.JBank.DTO.Login;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
